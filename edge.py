@@ -2,31 +2,22 @@ import cv2
 import numpy as np
 
 # read image as grayscale
-img = cv2.imread('lock.png', cv2.IMREAD_GRAYSCALE)
+image = cv2.imread('lock.png')
 
-# threshold to binary
-thresh = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
-            cv2.THRESH_BINARY,401,35)
+blurred = cv2.bilateralFilter(image,25,55,55)
+gray = cv2.cvtColor(blurred, cv2.COLOR_BGR2GRAY)
 
-# apply morphology
-kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5,5))
-morph = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+#(T, threshInv) = cv2.threshold(gray, 60, 255,
+#    cv2.THRESH_BINARY_INV)
 
-# find contours - write black over all small contours
-letter = morph.copy()
-cntrs = cv2.findContours(morph, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-cntrs = cntrs[0] if len(cntrs) == 2 else cntrs[1]
-for c in cntrs:
-    area = cv2.contourArea(c)
-    if area < 100:
-        cv2.drawContours(letter,[c],0,(0,0,0),-1)
+th2 = cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_MEAN_C,\
+            cv2.THRESH_BINARY_INV,11,2)
+th3 = cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
+            cv2.THRESH_BINARY_INV,11,2)
 
-# do canny edge detection
-edges = cv2.Canny(letter, 200, 200)
+cv2.imshow("Original", image)
+cv2.imshow("Blurred", blurred)
+cv2.imshow("Threshold Mean", th2)
+cv2.imshow("Threshold Gaussian", th3)
 
-# show results
-cv2.imshow("Threshold", thresh)
-cv2.imshow("Morphology", morph)
-#cv2.imshow("???", letter)
-#cv2.imshow("CannyEdge", edges)
 cv2.waitKey(0)
