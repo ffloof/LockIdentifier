@@ -1,0 +1,26 @@
+{
+	"labels": {
+		"void": {
+			"categorie": "void",
+			"color": [
+				255,
+				0,
+				0
+			],
+			"id": 2,
+			"id_categorie": 2,
+			"name": "void"
+		},
+		"keyway": {
+			"categorie": "lock",
+			"color": [
+				0,
+				255,
+				1
+			],
+			"id": 1,
+			"id_categorie": 1,
+			"name": "keyway"
+		}
+	}
+}
