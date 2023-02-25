@@ -2,6 +2,8 @@ from keras_segmentation.models.unet import mobilenet_unet
 
 model = mobilenet_unet(n_classes=2 ,  input_height=224, input_width=224)
 
+model.summary()
+
 model.train(
 	train_images =  "./dataset/images/",
 	train_annotations = "./dataset/annotations/",

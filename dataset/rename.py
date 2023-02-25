@@ -46,4 +46,12 @@ for filename in os.listdir(rawdir):
 	im.save(os.path.join(imagedir, filename)) #TODO: figure out if I want to convert names to number/indexes
 	# Copy the corresponding mask
 	maskfile = filename[:filename.rfind(".")] + "_color_mask.png"
-	shutil.copyfile(os.path.join(rawdir, maskfile), os.path.join(annotdir, filename))
+	im = Image.open(os.path.join(rawdir, maskfile))
+	# For some reason PixelAnnotationTool adds a border of white pixels so those are removed here
+	im = im.convert("RGBA")
+	data = np.array(im)
+	red, green, blue, alpha = data.T
+	white_areas = (red == 255) & (blue == 255) & (green == 255)
+	data[..., :-1][white_areas.T] = (255,0,0)
+	im2 = Image.fromarray(data)
+	im2.save(os.path.join(annotdir, filename))
