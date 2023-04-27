@@ -14,7 +14,7 @@ i_train = "./images/training"
 a_train = "./annotations/training"
 
 for name in [i_val, a_val, i_test, a_test, i_train, a_train]:
-	if !os.path.exists(name):
+	if not os.path.exists(name):
 		os.makedirs(name)
 
 
